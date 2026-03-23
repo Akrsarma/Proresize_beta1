@@ -1,0 +1,25 @@
+{
+  "name": "proresize-beta1",
+  "version": "1.0.0",
+  "description": "ProResize – Image Compressor & Resizer",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve .",
+    "build": "echo 'Static site - no build required'",
+    "lint": "echo 'No linting configured'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "image",
+    "resize",
+    "compress"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.12"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
