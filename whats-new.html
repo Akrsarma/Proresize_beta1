@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Read the latest ProResize changelog, feature improvements, mobile updates, bug fixes, and release notes.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00B8A9">
+<link rel="canonical" href="https://proresize.com/whats-new.html">
+<link rel="icon" type="image/png" href="favicon.png?v=3">
+<link rel="shortcut icon" href="favicon.ico?v=3">
+<title>What's New - ProResize</title>
+<meta property="og:type" content="article">
+<meta property="og:title" content="What's New - ProResize">
+<meta property="og:description" content="See the latest ProResize release notes, improvements, and fixes in the What's New changelog page.">
+<meta property="og:url" content="https://proresize.com/whats-new.html">
+<meta property="og:site_name" content="ProResize">
+<meta property="og:image" content="https://proresize.com/favicon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="What's New - ProResize">
+<meta name="twitter:description" content="See the latest ProResize release notes, improvements, and fixes in the What's New changelog page.">
+<meta name="twitter:image" content="https://proresize.com/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=101">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "What's New - ProResize",
+  "url": "https://proresize.com/whats-new.html",
+  "description": "Release notes and changelog updates for ProResize.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "ProResize",
+    "url": "https://proresize.com/"
+  }
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html" aria-label="Go to ProResize home page">
+    <img src="favicon.png" alt="ProResize Logo">
+    <span><em>Pro</em>Resize</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link-btn" href="index.html">Home</a>
+    <a class="nav-link-btn" href="about.html">About</a>
+    <a class="nav-link-btn active" href="whats-new.html" aria-current="page">What's New</a>
+    <a class="nav-link-btn" href="privacy-policy.html">Privacy</a>
+    <span class="version-badge">v1.1.0 BETA</span>
+    <div class="theme-toggle" id="themeToggle" title="Toggle theme"></div>
+  </div>
+</nav>
+
+<section class="hero about-hero">
+  <div class="hero-badge">What's New</div>
+  <h1>Recent updates to ProResize.</h1>
+  <p>A quick changelog for the latest improvements, fixes, and usability updates in the project.</p>
+</section>
+
+<section class="about-section">
+  <div class="changelog-wrap">
+    <article class="changelog-card">
+      <div class="changelog-header">
+        <div>
+          <span class="changelog-version">v1.1.0 BETA</span>
+        </div>
+        <div class="changelog-date">March 28, 2026</div>
+      </div>
+      <h2>Mobile crop improvements and faster preset browsing.</h2>
+      <p>This release focuses on making ProResize easier to use on phones while also speeding up how users find the right resize preset for forms and social media posts.</p>
+      <ul class="change-list">
+        <li><strong>Better mobile crop tool:</strong> the crop modal now gives mobile users a larger working area, bigger drag handles, and a cleaner crop selector that is easier to see and control.</li>
+        <li><strong>Quick crop controls:</strong> new quick crop buttons such as Full, Square, Portrait, and Story help users start with a useful crop shape faster on phones.</li>
+        <li><strong>Fine adjustment on mobile:</strong> touch-friendly arrow and resize controls make it easier to nudge and adjust the crop box without relying only on dragging.</li>
+        <li><strong>Government preset search:</strong> users can now search presets by exam, post, and document keywords while still using category filters.</li>
+        <li><strong>Social media preset search:</strong> the social preset panel now supports live keyword search for platform types like story, banner, thumbnail, post, and profile image.</li>
+        <li><strong>Cleaner results and navigation:</strong> preset lists now show helpful empty states when nothing matches, and mobile browsing feels smoother overall.</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<footer>
+  Made with ♥ by <strong>ProResize</strong> - Smart image tools, free forever.
+  <br><span class="footer-version">Version v1.1.0 BETA</span>
+  <br><span style="margin-top:6px;display:inline-block;">Need help? <a href="mailto:support@proresize.com">support@proresize.com</a></span>
+  <br><span style="margin-top:6px;display:inline-block;"><a href="privacy-policy.html">Privacy Policy</a></span>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+  const savedTheme = localStorage.getItem('proresize-theme');
+  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+  const themeToggle = document.getElementById('themeToggle');
+  if (!themeToggle) return;
+
+  themeToggle.addEventListener('click', function() {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('proresize-theme', next);
+  });
+})();
+</script>
+
+</body>
+</html>

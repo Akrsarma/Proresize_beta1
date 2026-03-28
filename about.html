@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn about ProResize, the goals behind the project, its practical image tools, and the development work by Abhinav Sarma.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00B8A9">
+<link rel="canonical" href="https://proresize.com/about.html">
+<link rel="icon" type="image/png" href="favicon.png?v=3">
+<link rel="shortcut icon" href="favicon.ico?v=3">
+<title>About ProResize</title>
+<meta property="og:type" content="article">
+<meta property="og:title" content="About ProResize">
+<meta property="og:description" content="Learn about the vision, development, and purpose behind ProResize and its practical image processing tools.">
+<meta property="og:url" content="https://proresize.com/about.html">
+<meta property="og:site_name" content="ProResize">
+<meta property="og:image" content="https://proresize.com/favicon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="About ProResize">
+<meta name="twitter:description" content="Learn about the vision, development, and purpose behind ProResize and its practical image processing tools.">
+<meta name="twitter:image" content="https://proresize.com/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=101">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About ProResize",
+  "url": "https://proresize.com/about.html",
+  "description": "Information about ProResize, its purpose, and the final year project behind the website.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "ProResize",
+    "url": "https://proresize.com/"
+  }
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html" aria-label="Go to ProResize home page">
+    <img src="favicon.png" alt="ProResize Logo">
+    <span><em>Pro</em>Resize</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link-btn active" href="about.html" aria-current="page">About</a>
+    <a class="nav-link-btn" href="index.html">Home</a>
+    <a class="nav-link-btn" href="whats-new.html">What's New</a>
+    <a class="nav-link-btn" href="privacy-policy.html">Privacy</a>
+    <span class="version-badge">v1.1.0 BETA</span>
+    <div class="theme-toggle" id="themeToggle" title="Toggle theme"></div>
+  </div>
+</nav>
+
+<section class="hero about-hero">
+  <div class="hero-badge">About Proresize</div>
+  <h1>Simple image tools with a practical focus.</h1>
+  <p>Learn more about the purpose of Proresize, its development, and the goals behind the project.</p>
+</section>
+
+<section class="about-section">
+  <div class="about-card">
+    <div class="about-badge">Project Overview</div>
+    <h2>Built to make image processing simple, fast, and practical.</h2>
+    <p>Proresize is a web-based tool designed to simplify image resizing and optimization while preserving quality. It enables users to process images quickly and efficiently, making it suitable for academic, professional, and everyday use.</p>
+    <p>This website has been developed by <a href="https://www.linkedin.com/in/abhinaba-krishna-rishi-sarma-6545992a7?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer">Abhinav Sarma</a>, a Bachelor of Science in Information Technology student from Lalit Chandra Bharali College, as part of his final year project. The objective of this project is to deliver a practical and user-focused solution rather than a purely academic implementation.</p>
+    <p>Proresize addresses common limitations found in many existing tools, such as unnecessary complexity, slow performance, and poor user experience. The platform is built with a clear focus on efficiency, simplicity, and reliability.</p>
+    <div class="about-list-wrap">
+      <h3>Key functionalities</h3>
+      <ul class="about-list">
+        <li>Fast and accurate image resizing</li>
+        <li>Optimization while maintaining visual quality</li>
+        <li>A clean and intuitive user interface</li>
+      </ul>
+    </div>
+    <p>The primary goal of Proresize is to provide a seamless and effective user experience without unnecessary complications.</p>
+    <p>The platform will continue to evolve through ongoing improvements and feature enhancements based on user feedback and requirements.</p>
+  </div>
+</section>
+
+<footer>
+  Made with ♥ by <strong>ProResize</strong> — Smart image tools, free forever.
+  <br><span class="footer-version">Version v1.1.0 BETA</span>
+  <br><span style="margin-top:6px;display:inline-block;">Need help? <a href="mailto:support@proresize.com">support@proresize.com</a></span>
+  <br><span style="margin-top:6px;display:inline-block;"><a href="privacy-policy.html">Privacy Policy</a></span>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+  const savedTheme = localStorage.getItem('proresize-theme');
+  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+  const themeToggle = document.getElementById('themeToggle');
+  if (!themeToggle) return;
+
+  themeToggle.addEventListener('click', function() {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('proresize-theme', next);
+  });
+})();
+</script>
+
+</body>
+</html>
