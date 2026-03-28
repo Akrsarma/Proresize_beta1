@@ -22,6 +22,7 @@
 <title>ProResize – Image Compressor & Resizer</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=101">
+<link rel="stylesheet" href="popup.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -43,7 +44,7 @@
 }
 </script>
 </head>
-<body>
+<body class="extension-popup">
 
 <nav>
   <a class="logo" href="index.html" aria-label="Reload ProResize home page">
@@ -54,15 +55,20 @@
     <a class="nav-link-btn" href="about.html">About</a>
     <a class="nav-link-btn" href="whats-new.html">What's New</a>
     <span class="nav-badge">Free & Private</span>
-    <span class="version-badge">v1.1.0 BETA</span>
+    <span class="version-badge">V1.0.0</span>
+    <a class="extension-site-btn" href="https://proresize.com/" target="_blank" rel="noopener noreferrer">Open Website</a>
     <div class="theme-toggle" id="themeToggle" title="Toggle theme"></div>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">✨ 100% Browser-Based</div>
+  <div class="hero-badge">✨ Quick Popup Tool</div>
   <h1>Compress & Resize<br><span>Images Instantly</span></h1>
   <p>Reduce file sizes and resize to any dimension — all privately processed in your browser. No uploads, no sign-up.</p>
+  <div class="extension-helper-row">
+    <span class="extension-helper-text">Need more space or full-page browsing?</span>
+    <a class="extension-helper-link" href="https://proresize.com/" target="_blank" rel="noopener noreferrer">Open full website</a>
+  </div>
   <div class="tabs" id="tabBar">
     <button class="tab-btn active" data-tab="compress">🗜️ Compress</button>
     <button class="tab-btn" data-tab="resize">📐 Resize</button>
@@ -192,13 +198,10 @@
 
     <!-- PRESETS -->
     <div class="tool-section" id="sec-presets">
-      <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:18px;">Select a government exam or job preset — dimensions and size limits are pre-filled. Upload your photo then click Apply.</p>
-      <div class="preset-toolbar">
-        <label class="preset-search" for="presetSearch">
-          <span>Search presets</span>
-          <input type="search" id="presetSearch" placeholder="Search exam, post, photo, signature...">
-        </label>
+      <div class="preset-search-wrap">
+        <input type="search" id="presetSearch" class="preset-search-input" placeholder="Search presets like UPSC, SSC, Assam..." aria-label="Search presets">
       </div>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:18px;">Select a government exam or job preset — dimensions and size limits are pre-filled. Upload your photo then click Apply.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;" id="catFilter">
         <button class="fmt-btn active" data-cat="all">All</button>
         <button class="fmt-btn" data-cat="upsc">UPSC</button>
@@ -243,11 +246,9 @@
     <!-- SOCIAL MEDIA -->
     <div class="tool-section" id="sec-social">
       <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:18px;">Pick a platform and size — your image will be resized to the exact recommended dimensions.</p>
-      <div class="preset-toolbar">
-        <label class="preset-search" for="socialSearch">
-          <span>Search social presets</span>
-          <input type="search" id="socialSearch" placeholder="Search platform, post, story, banner...">
-        </label>
+      <div class="preset-search-wrap" style="display:flex;gap:10px;align-items:center;margin-bottom:18px;">
+        <input type="search" id="socialSearch" class="preset-search-input" placeholder="Search sizes like story, post, thumbnail..." aria-label="Search social media sizes">
+        <button class="fmt-btn active" id="socialSearchBtn" type="button" style="flex:none;padding:11px 18px;">Search</button>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;" id="socialFilter">
         <button class="fmt-btn active" data-plat="all">All</button>
@@ -296,9 +297,8 @@
 
 <footer>
   Made with ♥ by <strong>ProResize</strong> — Smart image tools, free forever.
-  <br><span class="footer-version">Version v1.1.0 BETA</span>
+  <br><span class="footer-version">Version V1.0.0</span>
   <br><span style="margin-top:6px;display:inline-block;">Need help? <a href="mailto:support@proresize.com">support@proresize.com</a></span>
-  <br><span style="margin-top:6px;display:inline-block;"><a href="privacy-policy.html">Privacy Policy</a></span>
 </footer>
 
 <!-- CROP MODAL -->
@@ -308,7 +308,6 @@
       <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);">✂️ Crop Image</h3>
       <button id="closeCropBtn" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);cursor:pointer;font-size:0.85rem;font-family:'DM Sans',sans-serif;">✕ Close</button>
     </div>
-    <p class="crop-help-text">Drag inside the crop box to move it, use the corners to resize, or tap a quick crop below for faster editing on mobile.</p>
     <div id="cropContainer">
       <canvas id="cropCanvas"></canvas>
       <canvas id="overlayCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
@@ -324,20 +323,6 @@
         <div class="ch ch-l" data-h="l"></div>
         <div class="ch ch-r" data-h="r"></div>
       </div>
-    </div>
-    <div class="crop-quick-row">
-      <button class="crop-quick-btn active" type="button" data-crop-preset="full">Full</button>
-      <button class="crop-quick-btn" type="button" data-crop-preset="square">Square</button>
-      <button class="crop-quick-btn" type="button" data-crop-preset="portrait">Portrait</button>
-      <button class="crop-quick-btn" type="button" data-crop-preset="story">Story</button>
-    </div>
-    <div class="crop-adjust-grid">
-      <button class="crop-adjust-btn" type="button" data-crop-adjust="up">↑</button>
-      <button class="crop-adjust-btn" type="button" data-crop-adjust="bigger">＋</button>
-      <button class="crop-adjust-btn" type="button" data-crop-adjust="left">←</button>
-      <button class="crop-adjust-btn" type="button" data-crop-adjust="down">↓</button>
-      <button class="crop-adjust-btn" type="button" data-crop-adjust="right">→</button>
-      <button class="crop-adjust-btn" type="button" data-crop-adjust="smaller">－</button>
     </div>
     <div style="margin-top:14px;">
       <label style="font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px;">Aspect Ratio</label>
