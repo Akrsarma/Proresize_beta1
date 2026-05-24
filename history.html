@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="View your ProResize image processing history.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00B8A9">
+<link rel="canonical" href="https://proresize.com/history.html">
+<link rel="icon" type="image/png" href="favicon.png?v=3">
+<link rel="shortcut icon" href="favicon.ico?v=3">
+<title>History | ProResize</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=103">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html" aria-label="Go to ProResize home page">
+    <img src="favicon.png" alt="ProResize Logo">
+    <span><em>Pro</em>Resize</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link-btn active" href="history.html">History</a>
+    <details class="nav-menu">
+      <summary class="nav-menu-trigger">Menu</summary>
+      <div class="nav-menu-panel">
+        <a class="nav-link-btn" href="index.html">Home</a>
+        <a class="nav-link-btn" href="login.html" id="navAuthLink">Login</a>
+        <button class="nav-link-btn" type="button" id="navLogoutBtn" style="display:none;">Logout</button>
+      </div>
+    </details>
+    <div class="theme-toggle" id="themeToggle" title="Toggle theme"></div>
+  </div>
+</nav>
+
+<section class="hero about-hero auth-hero">
+  <div class="hero-badge">Saved History</div>
+  <h1>Your recent image actions.</h1>
+  <p>Logged-in users can review recent compress, resize, preset, and social media jobs from their account history.</p>
+</section>
+
+<section class="history-shell">
+  <div class="history-card" id="historyGuestState">
+    <div class="about-badge">Login Needed</div>
+    <h2>Sign in to view saved history.</h2>
+    <p>This website still works without login, but history is only available for signed-in users.</p>
+    <div class="account-panel-actions">
+      <a class="account-btn account-btn-primary" href="login.html">Login</a>
+      <a class="account-btn" href="index.html">Use Website</a>
+    </div>
+  </div>
+
+  <div class="history-card" id="historyUserState" style="display:none;">
+    <div class="history-header">
+      <div>
+        <div class="about-badge">Account History</div>
+        <h2 id="historyTitle">Recent activity</h2>
+        <p id="historySubtitle">Loading history...</p>
+      </div>
+      <button class="nav-link-btn" type="button" id="clearHistoryBtn">Clear History</button>
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="history-empty">Loading your history...</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Made with ♥ by <strong>ProResize</strong> - Smart image tools, free forever.
+  <br><span class="footer-version">Version V2.0 PR</span>
+</footer>
+
+<div class="confirm-modal" id="clearHistoryModal" aria-hidden="true">
+  <div class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="clearHistoryModalTitle" aria-describedby="clearHistoryModalMessage">
+    <div class="confirm-badge">Confirm Action</div>
+    <h3 id="clearHistoryModalTitle">Clear history?</h3>
+    <p id="clearHistoryModalMessage">This will permanently remove your saved history.</p>
+    <div class="confirm-actions">
+      <button class="confirm-btn confirm-btn-secondary" id="cancelClearHistoryBtn" type="button">Cancel</button>
+      <button class="confirm-btn confirm-btn-danger" id="confirmClearHistoryBtn" type="button">Clear History</button>
+    </div>
+  </div>
+</div>
+
+<script src="firebase-config.js?v=110"></script>
+<script src="auth.js?v=110"></script>
+</body>
+</html>
