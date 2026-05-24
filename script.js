@@ -14,6 +14,16 @@
   let socialSearchTerm = '';
   let hasCropped = false;
 
+  function formatBytes(bytes) {
+    const kb = bytes / 1024;
+    return kb >= 1024 ? (kb / 1024).toFixed(2) + ' MB' : kb.toFixed(1) + ' KB';
+  }
+
+  function saveHistoryEntry(entry) {
+    if (!window.ProResizeAuth || typeof window.ProResizeAuth.addHistory !== 'function') return;
+    window.ProResizeAuth.addHistory(entry);
+  }
+
   // Crop state
   let cropScale = 1, cropImgNatW = 0, cropImgNatH = 0;
   let cropRatioW = 0, cropRatioH = 0;
@@ -23,16 +33,8 @@
   let pageScrollY = 0;
 
   // ── THEME ──
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('click', function() {
-    const html = document.documentElement;
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('proresize-theme', next);
-  });
   const savedTheme = localStorage.getItem('proresize-theme');
   if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
-  // Default is already dark from HTML attribute
 
   // ── TABS ──
   document.getElementById('tabBar').addEventListener('click', function(e) {
@@ -371,6 +373,20 @@
     document.getElementById('dlCompress').onclick = function(e) { e.preventDefault(); triggerDownload(blobURL, 'proresize-compressed.' + ext); };
     document.getElementById('compressSummary').textContent = 'Reduced by ' + pct + '% — saved ' + (savedKB > 0 ? savedKB + ' KB' : 'optimized');
     document.getElementById('compressResult').classList.add('show');
+    saveHistoryEntry({
+      tool: 'Compress',
+      summary: 'Compressed ' + currentFile.name + ' by ' + pct + '%',
+      changeSummary: 'Reduced by ' + pct + '%',
+      inputName: currentFile.name,
+      inputSize: formatBytes(currentFile.size),
+      outputSize: formatBytes(blob.size),
+      dimensions: img.naturalWidth + 'x' + img.naturalHeight,
+      format: ext,
+      mode: compressMode,
+      downloadName: 'proresize-compressed.' + ext,
+      fileType: blob.type || fmt,
+      fileBlob: blob
+    });
     pw.classList.remove('show'); this.disabled = false;
   });
 
@@ -411,6 +427,20 @@
         document.getElementById('dlResize').onclick = function(e) { e.preventDefault(); triggerDownload(blobURL, 'proresize-' + w + 'x' + h + '.' + ext); };
         document.getElementById('resizeSummary').textContent = 'Resized to ' + w + '×' + h + ' pixels';
         document.getElementById('resizeResult').classList.add('show');
+        saveHistoryEntry({
+          tool: 'Resize',
+          summary: 'Resized ' + currentFile.name + ' to ' + w + 'x' + h,
+          changeSummary: 'Resized to ' + w + 'x' + h,
+          inputName: currentFile.name,
+          inputSize: formatBytes(currentFile.size),
+          outputSize: formatBytes(blob.size),
+          dimensions: w + 'x' + h,
+          format: ext,
+          mode: 'resize',
+          downloadName: 'proresize-' + w + 'x' + h + '.' + ext,
+          fileType: blob.type || fmt,
+          fileBlob: blob
+        });
         pw.classList.remove('show'); btn.disabled = false;
       }, fmt, 0.92);
     };
@@ -619,6 +649,20 @@
         triggerDownload(blobURL, 'proresize-' + p.exam.toLowerCase().replace(/\s/g,'-') + '-' + mode + '.' + ext);
       };
       document.getElementById('presetResult').style.display = 'block';
+      saveHistoryEntry({
+        tool: 'Gov Preset',
+        summary: p.name + ' (' + mode + ')',
+        changeSummary: mode === 'both' ? ('Resized to ' + outWidth + 'x' + outHeight + ' and compressed') : (mode === 'resize' ? ('Resized to ' + outWidth + 'x' + outHeight) : 'Compressed for preset'),
+        inputName: currentFile.name,
+        inputSize: formatBytes(currentFile.size),
+        outputSize: formatBytes(blob.size),
+        dimensions: outWidth + 'x' + outHeight,
+        format: ext,
+        mode: mode,
+        downloadName: 'proresize-' + p.exam.toLowerCase().replace(/\s/g,'-') + '-' + mode + '.' + ext,
+        fileType: blob.type || fmt,
+        fileBlob: blob
+      });
     } catch (err) {
       alert(err.message || 'Something went wrong while applying the preset.');
     } finally {
@@ -653,22 +697,29 @@
 
   function renderCropBox() {
     const canvas = document.getElementById('cropCanvas');
+    const container = document.getElementById('cropContainer');
+    const overlayCanvas = document.getElementById('overlayCanvas');
     const rect = canvas.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const offsetX = rect.left - containerRect.left + container.scrollLeft;
+    const offsetY = rect.top - containerRect.top + container.scrollTop;
     const sx = rect.width / canvas.width;
     const sy = rect.height / canvas.height;
     const dx = box.x * sx, dy = box.y * sy, dw = box.w * sx, dh = box.h * sy;
     const el = document.getElementById('cropBox');
     el.style.display = 'block';
-    el.style.left = dx + 'px'; el.style.top = dy + 'px';
+    el.style.left = (offsetX + dx) + 'px'; el.style.top = (offsetY + dy) + 'px';
     el.style.width = dw + 'px'; el.style.height = dh + 'px';
     // Draw dark overlay on overlay canvas
-    const oc = document.getElementById('overlayCanvas');
-    oc.width = rect.width; oc.height = rect.height;
-    const ctx = oc.getContext('2d');
-    ctx.clearRect(0, 0, oc.width, oc.height);
+    overlayCanvas.width = container.clientWidth;
+    overlayCanvas.height = container.scrollHeight;
+    overlayCanvas.style.width = container.clientWidth + 'px';
+    overlayCanvas.style.height = container.scrollHeight + 'px';
+    const ctx = overlayCanvas.getContext('2d');
+    ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fillRect(0, 0, oc.width, oc.height);
-    ctx.clearRect(dx, dy, dw, dh);
+    ctx.fillRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+    ctx.clearRect(offsetX + dx, offsetY + dy, dw, dh);
     // Info
     document.getElementById('cropXY').textContent = Math.round(box.x/cropScale) + ', ' + Math.round(box.y/cropScale);
     document.getElementById('cropW').textContent = Math.round(box.w/cropScale) + ' px';
@@ -764,6 +815,7 @@
     document.body.style.width = '100%';
     document.getElementById('cropModal').style.display = 'flex';
     const canvas = document.getElementById('cropCanvas');
+    const container = document.getElementById('cropContainer');
     const img = new Image();
     img.onload = function() {
       cropImgNatW = img.naturalWidth; cropImgNatH = img.naturalHeight;
@@ -773,6 +825,10 @@
       cropScale = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight, 1);
       canvas.width  = Math.round(img.naturalWidth  * cropScale);
       canvas.height = Math.round(img.naturalHeight * cropScale);
+      canvas.style.width = canvas.width + 'px';
+      canvas.style.height = canvas.height + 'px';
+      container.scrollLeft = 0;
+      container.scrollTop = 0;
       canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
       box = {x:0, y:0, w:canvas.width, h:canvas.height};
       setActiveCropQuickButton('full');
@@ -798,6 +854,14 @@
   document.getElementById('cropModal').addEventListener('wheel', function(e) {
     e.preventDefault();
   }, {passive:false});
+
+  document.getElementById('cropContainer').addEventListener('scroll', function() {
+    if (document.getElementById('cropModal').style.display === 'flex') queueCropRender();
+  });
+
+  window.addEventListener('resize', function() {
+    if (document.getElementById('cropModal').style.display === 'flex') queueCropRender();
+  });
 
   // Ratio buttons
   document.getElementById('ratioRow').addEventListener('click', function(e) {
@@ -1168,6 +1232,20 @@
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
       };
       document.getElementById('socialResult').style.display = 'block';
+      saveHistoryEntry({
+        tool: 'Social Preset',
+        summary: p.plat.charAt(0).toUpperCase() + p.plat.slice(1) + ' - ' + p.name,
+        changeSummary: 'Resized to ' + p.w + 'x' + p.h,
+        inputName: currentFile.name,
+        inputSize: formatBytes(currentFile.size),
+        outputSize: formatBytes(blob.size),
+        dimensions: p.w + 'x' + p.h,
+        format: ext,
+        mode: 'social',
+        downloadName: 'proresize-' + p.plat + '-' + p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.' + ext,
+        fileType: blob.type || fmt,
+        fileBlob: blob
+      });
       const btn = document.getElementById('btnSocial');
       btn.disabled = false;
       btn.innerHTML = '📐 Resize for <span id="btnSocialLabel">' + p.plat.charAt(0).toUpperCase() + p.plat.slice(1) + '</span>';
